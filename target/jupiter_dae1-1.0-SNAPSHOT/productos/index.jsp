@@ -47,6 +47,7 @@
                                     <th>NOMBRE</th> 
                                     <th>Precio</th>
                                     <th>Stock</th>
+                                    <th>Categoria</h>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -59,6 +60,7 @@
                                     <td><%=producto.getNombre() %></td>
                                     <td><%=producto.getPrecio()%></td>
                                     <td><%=producto.getStock() %></td>
+                                    <td><%=producto.getCategoria()%></td>
                                     <td>
                                         <a href="${URL_APLICACION}/admin/productos/editar/<%=producto.getId() %>" class="btn btn-primary fas fa-edit"></a>
                                          <button onclick="abrirModal(<%=producto.getId() %>)" class="btn btn-danger fas fa-trash"></button>
