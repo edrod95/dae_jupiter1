@@ -1,4 +1,4 @@
-<%@page import="pe.isil.jupiter_dae1.model.Producto"%>
+<%@page import="pe.isil.daejupiter.model.Producto"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -56,7 +56,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <input value="<%=producto.getNombre()%>" type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre de categoría">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Precio</label>
+                                <%--@declare id="exampleinputemail1"--%><label for="exampleInputEmail1">Precio</label>
                                 <input value="<%=producto.getPrecio()%>" type="number" class="form-control" id="precio" name="precio" >
                             </div>
                             <div class="form-group">

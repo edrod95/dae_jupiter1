@@ -1,4 +1,4 @@
-<%@page import="pe.isil.jupiter_dae1.model.Categoria"%>
+<%@page import="pe.isil.daejupiter.model.Categoria"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -44,7 +44,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <form id="form_regcat" action="${URL_APLICACION}/admin/categorias/registrar" method="post" autocomplete="off">
                             
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Nombre</label>
+                                <%--@declare id="exampleinputemail1"--%><label for="exampleInputEmail1">Nombre</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre de categoría">
                                 
                             </div>

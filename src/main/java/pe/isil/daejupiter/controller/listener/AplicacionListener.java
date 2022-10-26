@@ -2,16 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/ServletListener.java to edit this template
  */
-package pe.isil.jupiter_dae1.controller.listener;
+package pe.isil.daejupiter.controller.listener;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-/**
- * Web application lifecycle listener.
- *
- * @author BSJF
- */
+
 public class AplicacionListener implements ServletContextListener {
 
     @Override

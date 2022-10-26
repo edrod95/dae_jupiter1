@@ -1,33 +1,34 @@
-
-package pe.isil.jupiter_dae1.dao;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package pe.isil.daejupiter.dao;
 
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-import pe.isil.jupiter_dae1.model.Producto;
-/**
- *
- * @author BSJF
- */
-public class AD_Producto {
+import pe.isil.daejupiter.model.Usuario;
+
+public class AD_Usuario {
     
     private PreparedStatement pst = null;
     private ResultSet rst; // obtiene los datos de la db, select
     
-    public boolean insertar (Producto producto){
+    public boolean insertar (Usuario usuario){
         boolean resultado = false;
         Connection Conexion = null;
         try {
                Conexion = ConexionDB.getInstancia().getConnection();
            if(Conexion != null){
-               String SQL = "INSERT INTO producto (nombre, precio,stock,categoria) VALUES(?,?,?,?)";
+               String SQL = "INSERT INTO usuario (email, password, nombre, dni,rol) VALUES(?,?,?,?,?)";
                pst = Conexion.prepareStatement(SQL);
-               pst.setString(1, producto.getNombre());                             
-               pst.setDouble(2, producto.getPrecio());
-               pst.setInt(3, producto.getStock());
-               pst.setString(4, producto.getCategoria());
+               pst.setString(1, usuario.getEmail());
+               pst.setString(2, usuario.getPassword());
+               pst.setString(3, usuario.getNombre());
+               pst.setString(4, usuario.getDni());
+               pst.setString(5, usuario.getRol());
                
                int res= 0;
                res = pst.executeUpdate();
@@ -38,7 +39,7 @@ public class AD_Producto {
                }
                
            }else{
-               System.out.println("Error en la conexión a la DB - insertar producto");
+               System.out.println("Error en la conexión a la DB");
            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -49,19 +50,20 @@ public class AD_Producto {
     }
     
     //actualizar
-     public boolean actualizar (Producto producto){
+     public boolean actualizar (Usuario usuario){
         boolean resultado = false;
         Connection Conexion = null;
         try {
                Conexion = ConexionDB.getInstancia().getConnection();
            if(Conexion != null){
-               String SQL = "UPDATE producto set nombre=?, precio=?,stock=?, categoria=? where id=?";
+               String SQL = "UPDATE usuario set email=?, password=?, nombre=?,dni=?,rol=? where id=?";
                pst = Conexion.prepareStatement(SQL);
-               pst.setString(1, producto.getNombre());               
-               pst.setDouble(2, producto.getPrecio());
-               pst.setInt(3, producto.getStock());
-               pst.setString(4, producto.getCategoria());               
-               pst.setInt(5, producto.getId());
+               pst.setString(1, usuario.getEmail());
+               pst.setString(2, usuario.getPassword());
+               pst.setString(3, usuario.getNombre());
+               pst.setString(4, usuario.getDni());
+               pst.setString(5, usuario.getRol());
+               pst.setInt(6, usuario.getId());
                int res= 0;
                res = pst.executeUpdate();
                if(res > 0){
@@ -82,15 +84,15 @@ public class AD_Producto {
     }
     
     //eliminar
-        public boolean eliminar (Integer id){
+        public boolean eliminar (Usuario usuario){
         boolean resultado = false;
         Connection Conexion = null;
         try {
                Conexion = ConexionDB.getInstancia().getConnection();
            if(Conexion != null){
-               String SQL = "Delete from producto where id=?";
+               String SQL = "Delete from usuario where id=?";
                pst = Conexion.prepareStatement(SQL);
-               pst.setInt(1, id);
+               pst.setInt(1, usuario.getId());
                int res= 0;
                res = pst.executeUpdate();
                if(res > 0){
@@ -111,24 +113,25 @@ public class AD_Producto {
     }
      
      //Listar
-     public List<Producto>  getAll(){
-         List<Producto> listado  = new ArrayList<Producto>();
-         Producto producto; 
+     public List<Usuario>  getAll(){
+         List<Usuario> listado  = new ArrayList<Usuario>();
+         Usuario usuario; 
          Connection Conexion = null;
             try {
                Conexion = ConexionDB.getInstancia().getConnection();
                 if(Conexion != null){
-                   String SQL = "select * from producto";
+                   String SQL = "select * from usuario";
                    pst = Conexion.prepareStatement(SQL);                   
-                   rst = pst.executeQuery(); 
+                   rst = pst.executeQuery(); // se guarda el resutlado del select aqui                   
                     while (rst.next()) {
-                        producto = new Producto();                        
-                        producto.setId(rst.getInt("id"));                      
-                        producto.setNombre(rst.getString("nombre"));
-                        producto.setPrecio(rst.getDouble("precio"));
-                        producto.setStock(rst.getInt("stock"));
-                        producto.setCategoria(rst.getString("categoria"));
-                        listado.add(producto);
+                        usuario = new Usuario();
+                        usuario.setId(rst.getInt("id"));
+                        usuario.setEmail(rst.getString("email"));
+                        usuario.setPassword(rst.getString("password"));    
+                        usuario.setNombre(rst.getString("nombre"));                        
+                        usuario.setDni(rst.getString("dni"));    
+                        usuario.setRol(rst.getString("rol"));
+                        listado.add(usuario);
                     }
                }else{
                    System.out.println("Error en la conexión a la DB");
@@ -141,24 +144,25 @@ public class AD_Producto {
             return listado;
      }
      
-     public Producto get(Integer id){          
-         Producto producto = new Producto();
+     public Usuario get(Integer id){          
+         Usuario usuario = new Usuario();
          Connection Conexion = null;
             try {
                Conexion = ConexionDB.getInstancia().getConnection();
                 if(Conexion != null){
-                   String SQL = "select * from producto where id=?";
+                   String SQL = "select * from usuario where id=?";
                    pst = Conexion.prepareStatement(SQL);
                    pst.setInt(1, id);
                    
-                   rst = pst.executeQuery(); 
+                   rst = pst.executeQuery(); // se guarda el resutlado del select aqui
                    
-                    while (rst.next()) {
-                        producto.setId(rst.getInt("id"));                        
-                        producto.setNombre(rst.getString("nombre"));                        
-                        producto.setPrecio(rst.getDouble("precio"));
-                        producto.setStock(rst.getInt("stock"));
-                        producto.setCategoria(rst.getString("categoria"));
+                    while (rst.next()) {                        
+                        usuario.setId(rst.getInt("id"));
+                        usuario.setEmail(rst.getString("email"));
+                        usuario.setPassword(rst.getString("password"));    
+                        usuario.setNombre(rst.getString("nombre"));                        
+                        usuario.setDni(rst.getString("dni"));    
+                        usuario.setRol(rst.getString("rol"));
                     }
                }else{
                    System.out.println("Error en la conexión a la DB");
@@ -168,7 +172,7 @@ public class AD_Producto {
         } finally {
             ConexionDB.getInstancia().close(Conexion);
         }
-            return producto;
+            return usuario;
     
     }
 }

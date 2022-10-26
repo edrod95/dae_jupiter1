@@ -2,16 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pe.isil.jupiter_dae1.dao;
+package pe.isil.daejupiter.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- *
- * @author BSJF
- */
 public class ConexionDB {
     private Connection conexion;
     private static ConexionDB instancia;
@@ -23,7 +19,7 @@ public class ConexionDB {
             String username="root";
             String password="root";
             String host = "localhost";
-            String database = "jupiter_dae1";
+            String database = "daejupiter";
             String puerto = "3306";
             
             //paso 2; Cargar el Driver o controlador o dependencia de MYSQL

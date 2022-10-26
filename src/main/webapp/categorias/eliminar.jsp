@@ -1,4 +1,4 @@
-<%@page import="pe.isil.jupiter_dae1.model.Categoria"%>
+<%@page import="pe.isil.daejupiter.model.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%Categoria categoria = new Categoria();
     categoria = (Categoria) request.getAttribute("categoria");

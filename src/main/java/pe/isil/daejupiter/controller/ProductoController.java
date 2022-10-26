@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package pe.isil.jupiter_dae1.controller;
+package pe.isil.daejupiter.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,15 +13,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import pe.isil.jupiter_dae1.dao.AD_Categoria;
-import pe.isil.jupiter_dae1.model.Categoria;
+import pe.isil.daejupiter.dao.AD_Producto;
+import pe.isil.daejupiter.model.Producto;
 
-/**
- *
- * @author BSJF
- */
-@WebServlet(name = "CategoriaController", urlPatterns = {"/admin/categorias/*"})
-public class CategoriaController extends HttpServlet {
+
+@WebServlet(name = "ProductoController", urlPatterns = {"/admin/productos/*"})
+public class ProductoController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +37,10 @@ public class CategoriaController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoriaController</title>");            
+            out.println("<title>Servlet ProductoController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoriaController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductoController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,55 +58,59 @@ public class CategoriaController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //FUNCION       DESCRIPCION                             URL                                     METODO
-        //Listar        Muestra al inicio todas las categorias  https://localhost:8080/admin/categorias GET
-                
-        //Para obtener la ruta que ingrersa usamos request.getpathinfo
+        
+         //Para obtener la ruta que ingrersa usamos request.getpathinfo
         String URL = request.getPathInfo();
-        System.out.println("LA URL ES ESTA -categorias: " +URL);
+        System.out.println("LA URL ES ESTA -produtos: " +URL);
         if(URL == null || URL.equals("/")){
-            //1. Obtener las categorias de la base de datos
-            AD_Categoria ad_categoria = new AD_Categoria();
-             List<Categoria> listado  = new ArrayList<Categoria>();
-             listado = ad_categoria.getAll();
+            //1. Obtener los productos de la base de datos
+            AD_Producto ad_producto = new AD_Producto();
+            List<Producto> listado  = new ArrayList<Producto>();          
+            listado = ad_producto.getAll();
             
             
-            //2. Agregar como atributo al request la lista de categorias
+            //2. Agregar como atributo al request la lista de productos
             request.setAttribute("listado", listado);
             
-            //3. Envío del listado de categorias al front
-            request.getRequestDispatcher("/categorias/index.jsp").forward(request, response);
-        } 
-        
-        if(URL.equals("/nuevo")){
-            request.getRequestDispatcher("/categorias/nuevo.jsp").forward(request, response);
+            //3. Envío del listado de productos al front
+            request.getRequestDispatcher("/productos/index.jsp").forward(request, response);
+            
+            
         }
+        
+        //Nuevo
+        if(URL.equals("/nuevo")){
+            request.getRequestDispatcher("/productos/nuevo.jsp").forward(request, response);
+            }
         
         // /editar/1
         // [editar] y [1]
-        String accion = URL.substring(1) ; // editar/1/o
+        String accion = URL.substring(1) ; //--> editar/1/o
         String[] ruta = accion.split("/"); // ruta[0] = "editar", ruta[1] = "1", ruta[2] = "o"
         
-        if(ruta[0].equals("editar")){
+        if(ruta[0].equals("editar")){            
             Integer id = Integer.parseInt(ruta[1]);
-            Categoria categoria = new Categoria();
-            AD_Categoria ad = new AD_Categoria();
-            categoria = ad.get(id);
+            Producto producto = new Producto();
+            AD_Producto ad = new AD_Producto();
+            producto = ad.get(id);
             
-            request.setAttribute("categoria", categoria);
-            request.getRequestDispatcher("/categorias/editar.jsp").forward(request, response);
-        }
+            request.setAttribute("producto", producto);
+            request.getRequestDispatcher("/productos/editar.jsp").forward(request, response);
+        }else{
+            System.out.println("Error en Editar");
+        }    
         
         //eliminar
          if(ruta[0].equals("eliminar")){
             Integer id = Integer.parseInt(ruta[1]);
-            Categoria categoria = new Categoria();
-            AD_Categoria ad = new AD_Categoria();
-            categoria = ad.get(id);
+             Producto producto = new Producto();
+            AD_Producto ad = new AD_Producto();
+            producto = ad.get(id);
             
-            request.setAttribute("categoria", categoria);
-            request.getRequestDispatcher("/categorias/eliminar.jsp").forward(request, response);
+            request.setAttribute("producto", producto);
+            request.getRequestDispatcher("/productos/eliminar.jsp").forward(request, response);
         }
+        
     }
 
     /**
@@ -124,21 +125,26 @@ public class CategoriaController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-         //FUNCION       DESCRIPCION                             URL                                                     METODO      VISTA
-        //Guardar       Inserta una categoria en la bd1         https://localhost:8080/admin/categorias/registrar        POST       categorias/nuevo.jsp
-        //Actualizar    actualizar una categoria en la bd1      https://localhost:8080/admin/categorias/actualizar/{id}  POST       categorias/nuevo.jsp
         
         String URL = request.getPathInfo();
+         
         if(URL.equals("/registrar")){
             String nombre = request.getParameter("nombre");
-            Categoria categoria = new Categoria();
-            categoria.setNombre(nombre);
+            Double precio = Double.parseDouble(request.getParameter("precio"));
+            Integer stock = Integer.parseInt(request.getParameter("stock"));
+            String categoria = request.getParameter("categoria");
             
-            AD_Categoria ad = new AD_Categoria();
-            ad.insertar(categoria);
+            Producto producto = new Producto();
+            producto.setNombre(nombre);
+            producto.setPrecio(precio);
+            producto.setStock(stock);
+            producto.setCategoria(categoria);
             
-            //3. Envío del listado de categorias al front
-            response.sendRedirect(request.getContextPath()+"/admin/categorias/");
+            AD_Producto ad = new AD_Producto();
+            ad.insertar(producto);
+            
+            //3. Envío del listado de productos al front
+            response.sendRedirect(request.getContextPath()+"/admin/productos");
         }
         
         //Editar
@@ -148,13 +154,20 @@ public class CategoriaController extends HttpServlet {
          if(ruta[0].equals("actualizar")){
             Integer id = Integer.parseInt(ruta[1]);
             String nombre = request.getParameter("nombre");
-            Categoria categoria = new Categoria();
-            categoria.setId(id);
-            categoria.setNombre(nombre);
+            Double precio = Double.parseDouble(request.getParameter("precio"));
+            Integer stock = Integer.parseInt(request.getParameter("stock"));
+            String categoria = request.getParameter("categoria");
             
-            AD_Categoria ad = new AD_Categoria();
-            ad.actualizar(categoria);
-            response.sendRedirect(request.getContextPath()+"/admin/categorias/");
+            Producto producto = new Producto();
+            producto.setId(id);
+            producto.setNombre(nombre);
+            producto.setPrecio(precio);
+            producto.setStock(stock);
+            producto.setCategoria(categoria);
+            
+            AD_Producto ad = new AD_Producto();
+            ad.actualizar(producto);
+            response.sendRedirect(request.getContextPath()+"/admin/productos");
             
         }
          
@@ -163,10 +176,10 @@ public class CategoriaController extends HttpServlet {
          if(ruta[0].equals("eliminar")){
             Integer id = Integer.parseInt(ruta[1]);
             
-            AD_Categoria ad = new AD_Categoria();
+            AD_Producto ad = new AD_Producto();
             ad.eliminar(id);
             
-            response.sendRedirect(request.getContextPath()+"/admin/categorias/");
+            response.sendRedirect(request.getContextPath()+"/admin/productos");
         }
         
     }

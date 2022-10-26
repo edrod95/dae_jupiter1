@@ -1,4 +1,4 @@
-<%@page import="pe.isil.jupiter_dae1.model.Producto"%>
+<%@page import="pe.isil.daejupiter.model.Producto"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -47,7 +47,7 @@
                                     <th>NOMBRE</th> 
                                     <th>Precio</th>
                                     <th>Stock</th>
-                                    <th>Categoria</h>
+                                    <th>Categoria</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>

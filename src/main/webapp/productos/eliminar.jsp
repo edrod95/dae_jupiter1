@@ -1,5 +1,5 @@
-<%@page import="pe.isil.jupiter_dae1.model.Producto"%>
-<%@page import="pe.isil.jupiter_dae1.model.Categoria"%>
+<%@page import="pe.isil.daejupiter.model.Producto"%>
+<%@page import="pe.isil.daejupiter.model.Categoria"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% Producto producto = new Producto();
     producto = (Producto) request.getAttribute("producto");

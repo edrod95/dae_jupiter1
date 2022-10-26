@@ -1,33 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package pe.isil.jupiter_dae1.dao;
+
+package pe.isil.daejupiter.dao;
 
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-import pe.isil.jupiter_dae1.model.Categoria;
+import pe.isil.daejupiter.model.Producto;
 
-/**
- *
- * @author BSJF
- */
-public class AD_Categoria {
+public class AD_Producto {
+    
     private PreparedStatement pst = null;
     private ResultSet rst; // obtiene los datos de la db, select
     
-    public boolean insertar (Categoria categoria){
+    public boolean insertar (Producto producto){
         boolean resultado = false;
         Connection Conexion = null;
         try {
                Conexion = ConexionDB.getInstancia().getConnection();
            if(Conexion != null){
-               String SQL = "INSERT INTO categoria (nombre) VALUES(?)";
+               String SQL = "INSERT INTO producto (nombre, precio,stock,categoria) VALUES(?,?,?,?)";
                pst = Conexion.prepareStatement(SQL);
-               pst.setString(1, categoria.getNombre());
+               pst.setString(1, producto.getNombre());                             
+               pst.setDouble(2, producto.getPrecio());
+               pst.setInt(3, producto.getStock());
+               pst.setString(4, producto.getCategoria());
+               
                int res= 0;
                res = pst.executeUpdate();
                if(res > 0){
@@ -37,7 +35,7 @@ public class AD_Categoria {
                }
                
            }else{
-               System.out.println("Error en la conexión a la DD - insertar");
+               System.out.println("Error en la conexión a la DB - insertar producto");
            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -48,16 +46,19 @@ public class AD_Categoria {
     }
     
     //actualizar
-     public boolean actualizar (Categoria categoria){
+     public boolean actualizar (Producto producto){
         boolean resultado = false;
         Connection Conexion = null;
         try {
                Conexion = ConexionDB.getInstancia().getConnection();
            if(Conexion != null){
-               String SQL = "UPDATE categoria set nombre=? where id=?";
+               String SQL = "UPDATE producto set nombre=?, precio=?,stock=?, categoria=? where id=?";
                pst = Conexion.prepareStatement(SQL);
-               pst.setString(1, categoria.getNombre());
-               pst.setInt(2, categoria.getId());
+               pst.setString(1, producto.getNombre());               
+               pst.setDouble(2, producto.getPrecio());
+               pst.setInt(3, producto.getStock());
+               pst.setString(4, producto.getCategoria());               
+               pst.setInt(5, producto.getId());
                int res= 0;
                res = pst.executeUpdate();
                if(res > 0){
@@ -67,7 +68,7 @@ public class AD_Categoria {
                }
                
            }else{
-               System.out.println("Error en la conexión a la DB - actualizar");
+               System.out.println("Error en la conexión a la DB");
            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -84,7 +85,7 @@ public class AD_Categoria {
         try {
                Conexion = ConexionDB.getInstancia().getConnection();
            if(Conexion != null){
-               String SQL = "Delete from categoria where id=?";
+               String SQL = "Delete from producto where id=?";
                pst = Conexion.prepareStatement(SQL);
                pst.setInt(1, id);
                int res= 0;
@@ -96,7 +97,7 @@ public class AD_Categoria {
                }
                
            }else{
-               System.out.println("Error en la conexión a la DB - eliminar");
+               System.out.println("Error en la conexión a la DB");
            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -107,28 +108,27 @@ public class AD_Categoria {
     }
      
      //Listar
-     public List<Categoria>  getAll(){
-         List<Categoria> listado  = new ArrayList<Categoria>();
-         Categoria categoria; 
+     public List<Producto>  getAll(){
+         List<Producto> listado  = new ArrayList<Producto>();
+         Producto producto; 
          Connection Conexion = null;
             try {
                Conexion = ConexionDB.getInstancia().getConnection();
                 if(Conexion != null){
-                   String SQL = "select * from categoria";
-                   pst = Conexion.prepareStatement(SQL);
-                   
-                   rst = pst.executeQuery(); // se guarda el resutlado del select aqui
-                   
+                   String SQL = "select * from producto";
+                   pst = Conexion.prepareStatement(SQL);                   
+                   rst = pst.executeQuery(); 
                     while (rst.next()) {
-                        categoria = new Categoria();
-                        categoria.setId(rst.getInt("id"));
-                        categoria.setNombre(rst.getString("nombre"));
-                        listado.add(categoria);
+                        producto = new Producto();                        
+                        producto.setId(rst.getInt("id"));                      
+                        producto.setNombre(rst.getString("nombre"));
+                        producto.setPrecio(rst.getDouble("precio"));
+                        producto.setStock(rst.getInt("stock"));
+                        producto.setCategoria(rst.getString("categoria"));
+                        listado.add(producto);
                     }
-                   
-                     
                }else{
-                   System.out.println("Error en la conexión a la DB - listar");
+                   System.out.println("Error en la conexión a la DB");
                }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -136,37 +136,36 @@ public class AD_Categoria {
             ConexionDB.getInstancia().close(Conexion);
         }
             return listado;
-         
      }
      
-     public Categoria get(Integer id){          
-         Categoria categoria = new Categoria();
+     public Producto get(Integer id){          
+         Producto producto = new Producto();
          Connection Conexion = null;
             try {
                Conexion = ConexionDB.getInstancia().getConnection();
                 if(Conexion != null){
-                   String SQL = "select * from categoria where id=?";
+                   String SQL = "select * from producto where id=?";
                    pst = Conexion.prepareStatement(SQL);
                    pst.setInt(1, id);
                    
-                   rst = pst.executeQuery(); // se guarda el resutlado del select aqui
+                   rst = pst.executeQuery(); 
                    
                     while (rst.next()) {
-                        categoria.setId(rst.getInt("id"));
-                        categoria.setNombre(rst.getString("nombre"));                        
+                        producto.setId(rst.getInt("id"));                        
+                        producto.setNombre(rst.getString("nombre"));                        
+                        producto.setPrecio(rst.getDouble("precio"));
+                        producto.setStock(rst.getInt("stock"));
+                        producto.setCategoria(rst.getString("categoria"));
                     }
                }else{
-                   System.out.println("Error en la conexión a la DB - get by id");
+                   System.out.println("Error en la conexión a la DB");
                }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             ConexionDB.getInstancia().close(Conexion);
         }
-            return categoria;
-     }
-        
-        
-    //Hacer para producto y usuario lo mismo para categoria
+            return producto;
     
+    }
 }
